@@ -57,7 +57,29 @@ export const logoutUser = (req, res) => {
 };
 export const updateUser = async (req, res) => {
   try {
-    return res.status(200).json({ message: "Update Controller" });
+    //console.log(req.user);
+    const user = await User.findById(req.user._id);
+    if (user) {
+      user.username = req.body.username || user.username;
+      user.email = req.body.email || user.email;
+      user.image = req.body.image || user.image;
+    }
+    if (req.body.password) {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      user.password = hashedPassword;
+    }
+
+    const updatedUser = await user.save();
+    if (updateUser) {
+      res.status(200).json({
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        image: updatedUser.image,
+      });
+    } else {
+      res.status(400).json({ message: "Unable to Update" });
+    }
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });
@@ -65,7 +87,14 @@ export const updateUser = async (req, res) => {
 };
 export const deleteUser = async (req, res) => {
   try {
-    return res.status(200).json({ message: "Delete Controller" });
+    const user = await User.findById(req.user._id);
+    if (user) {
+      res.clearCookie("jwt");
+      await User.deleteOne({ _id: user._id });
+      return res.status(200).json({ message: "User Deleted" });
+    } else {
+      return res.status(400).json({ message: "Unable to Delete User" });
+    }
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });
