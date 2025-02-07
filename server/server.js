@@ -27,10 +27,6 @@ app.use("/api", userRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
 connectDB();
 
 app.listen(PORT, () => {
