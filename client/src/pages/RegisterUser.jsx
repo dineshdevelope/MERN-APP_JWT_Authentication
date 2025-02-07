@@ -11,7 +11,6 @@ const RegisterUser = () => {
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       await axios.post(`${apiUrl}/api/register`, {
         username,
