@@ -1,7 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { IoEyeOffSharp } from "react-icons/io5";
+import { FaRegEye } from "react-icons/fa";
 
 const LoginUser = () => {
+  const [showPassword, setshowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleShowPassword = () => {
+    setshowPassword(!showPassword);
+  };
+
+  const apiUrl = import.meta.env.VITE_BASE_URL;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     <div>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -17,7 +33,12 @@ const LoginUser = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form
+            action="#"
+            method="POST"
+            className="space-y-6"
+            onSubmit={handleSubmit}
+          >
             <div>
               <label
                 htmlFor="email"
@@ -30,6 +51,7 @@ const LoginUser = () => {
                   id="email"
                   name="email"
                   type="email"
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="Enter your email address"
                   autoComplete="email"
@@ -55,15 +77,28 @@ const LoginUser = () => {
                   </Link>
                 </div>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative">
+                {showPassword ? (
+                  <FaRegEye
+                    onClick={handleShowPassword}
+                    className="absolute left-3 top-2.5"
+                  />
+                ) : (
+                  <IoEyeOffSharp
+                    onClick={handleShowPassword}
+                    className="absolute left-3 top-2.5"
+                  />
+                )}
+
                 <input
                   id="password"
                   name="password"
-                  type="password"
-                  placeholder="Enter your password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter password"
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 pl-10"
                 />
               </div>
             </div>

@@ -2,13 +2,19 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { IoEyeOffSharp } from "react-icons/io5";
+import { FaRegEye } from "react-icons/fa";
 
 const RegisterUser = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setshowPassword] = useState(false);
   const apiUrl = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
+  const handleShowPassword = () => {
+    setshowPassword(!showPassword);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -113,16 +119,29 @@ const RegisterUser = () => {
                   Password
                 </label>
               </div>
-              <div className="mt-2">
+
+              <div className="mt-2 relative">
+                {showPassword ? (
+                  <FaRegEye
+                    onClick={handleShowPassword}
+                    className="absolute left-3 top-2.5"
+                  />
+                ) : (
+                  <IoEyeOffSharp
+                    onClick={handleShowPassword}
+                    className="absolute left-3 top-2.5"
+                  />
+                )}
+
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Enter password"
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 pl-10"
                 />
               </div>
             </div>
